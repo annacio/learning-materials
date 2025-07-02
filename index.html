@@ -900,6 +900,8 @@
             const correctAnswer = blankSpan.dataset.correct;
             const userAnswer = blankSpan.textContent.trim();
             
+            console.log('Checking answer:', userAnswer, 'vs correct:', correctAnswer); // Debug log
+            
             if (!blankSpan.classList.contains('filled') || userAnswer === 'click to fill') {
                 showAnswerPopup(false, 'Please fill in the blank first by clicking on it!', '', correctAnswer);
                 return;
@@ -907,6 +909,8 @@
             
             // Check if answer is correct
             const isCorrect = userAnswer === correctAnswer;
+            
+            console.log('Is correct:', isCorrect); // Debug log
             
             // Update span styling
             blankSpan.classList.remove('correct', 'incorrect');
@@ -926,6 +930,7 @@
             }
             
             // Show popup with feedback
+            console.log('About to show popup'); // Debug log
             if (isCorrect) {
                 showAnswerPopup(true, 'Perfect! You got it right!', userAnswer, correctAnswer);
             } else {
@@ -939,27 +944,57 @@
             // Create overlay
             const overlay = document.createElement('div');
             overlay.className = 'popup-overlay';
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.background = 'rgba(0,0,0,0.5)';
+            overlay.style.zIndex = '1999';
+            overlay.style.opacity = '0';
+            overlay.style.transition = 'opacity 0.3s ease';
             
             // Create popup
             const popup = document.createElement('div');
             popup.className = `answer-popup ${isCorrect ? 'popup-correct' : 'popup-incorrect'}`;
+            popup.style.position = 'fixed';
+            popup.style.top = '50%';
+            popup.style.left = '50%';
+            popup.style.transform = 'translate(-50%, -50%)';
+            popup.style.background = 'white';
+            popup.style.borderRadius = '15px';
+            popup.style.padding = '30px';
+            popup.style.boxShadow = '0 20px 40px rgba(0,0,0,0.3)';
+            popup.style.zIndex = '2000';
+            popup.style.maxWidth = '400px';
+            popup.style.textAlign = 'center';
+            popup.style.opacity = '0';
+            popup.style.transform = 'translate(-50%, -50%) scale(0.8)';
+            popup.style.transition = 'all 0.3s ease';
             
             const icon = isCorrect ? '🎉' : '❌';
-            const title = isCorrect? 'Correct!' : 'Incorrect';
+            const title = isCorrect ? 'Correct!' : 'Incorrect';
             
             let detailMessage = message;
             if (!isCorrect && userAnswer) {
-                detailMessage += `<br><br><strong>You typed:</strong> "${userAnswer}"<br><strong>Correct answer:</strong> "${correctAnswer}"`;
+                detailMessage += `<br><br><strong>You chose:</strong> "${userAnswer}"<br><strong>Correct answer:</strong> "${correctAnswer}"`;
             } else if (isCorrect) {
-                detailMessage += `<br><br><strong>Answer:</strong> "${correctAnswer}"`;
+                detailMessage += `<br><br><strong>Your answer:</strong> "${userAnswer}"`;
             }
             
             popup.innerHTML = `
-                <div class="popup-icon">${icon}</div>
-                <div class="popup-title">${title}</div>
-                <div class="popup-message">${detailMessage}</div>
-                <button class="popup-close" onclick="closeAnswerPopup()">Continue</button>
+                <div style="font-size: 3rem; margin-bottom: 15px;">${icon}</div>
+                <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; color: ${isCorrect ? '#22543d' : '#742a2a'};">${title}</div>
+                <div style="font-size: 1.1rem; margin-bottom: 20px; line-height: 1.5;">${detailMessage}</div>
+                <button onclick="closeAnswerPopup()" style="background: #4299e1; color: white; border: none; padding: 10px 25px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;">Continue</button>
             `;
+            
+            // Add border color
+            if (isCorrect) {
+                popup.style.border = '3px solid #48bb78';
+            } else {
+                popup.style.border = '3px solid #f56565';
+            }
             
             // Add to page
             document.body.appendChild(overlay);
@@ -967,8 +1002,9 @@
             
             // Show with animation
             setTimeout(() => {
-                overlay.classList.add('show');
-                popup.classList.add('show');
+                overlay.style.opacity = '1';
+                popup.style.opacity = '1';
+                popup.style.transform = 'translate(-50%, -50%) scale(1)';
             }, 10);
             
             // Store references for closing
@@ -978,14 +1014,15 @@
 
         function closeAnswerPopup() {
             if (window.currentPopup && window.currentOverlay) {
-                window.currentPopup.classList.remove('show');
-                window.currentOverlay.classList.remove('show');
+                window.currentPopup.style.opacity = '0';
+                window.currentPopup.style.transform = 'translate(-50%, -50%) scale(0.8)';
+                window.currentOverlay.style.opacity = '0';
                 
                 setTimeout(() => {
-                    if (window.currentPopup.parentNode) {
+                    if (window.currentPopup && window.currentPopup.parentNode) {
                         window.currentPopup.parentNode.removeChild(window.currentPopup);
                     }
-                    if (window.currentOverlay.parentNode) {
+                    if (window.currentOverlay && window.currentOverlay.parentNode) {
                         window.currentOverlay.parentNode.removeChild(window.currentOverlay);
                     }
                     window.currentPopup = null;
