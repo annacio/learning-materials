@@ -872,12 +872,53 @@
         function fillBlank(span) {
             if (span.classList.contains('filled')) return;
             
-            const userInput = prompt('Type the missing word(s):');
-            if (userInput !== null && userInput.trim() !== '') {
-                span.textContent = userInput.trim();
-                span.classList.add('filled');
-                span.dataset.userAnswer = userInput.trim();
+            // Make the span editable
+            span.contentEditable = true;
+            span.textContent = '';
+            span.style.background = '#e3f2fd';
+            span.style.color = '#1976d2';
+            span.focus();
+            
+            // Add placeholder text
+            span.dataset.placeholder = 'type here...';
+            if (span.textContent === '') {
+                span.textContent = 'type here...';
+                span.style.fontStyle = 'italic';
+                span.style.opacity = '0.7';
             }
+            
+            // Handle focus events
+            span.addEventListener('focus', function() {
+                if (this.textContent === 'type here...') {
+                    this.textContent = '';
+                    this.style.fontStyle = 'normal';
+                    this.style.opacity = '1';
+                }
+            });
+            
+            // Handle blur events
+            span.addEventListener('blur', function() {
+                if (this.textContent.trim() === '') {
+                    this.textContent = 'type here...';
+                    this.style.fontStyle = 'italic';
+                    this.style.opacity = '0.7';
+                } else {
+                    this.classList.add('filled');
+                    this.dataset.userAnswer = this.textContent.trim();
+                    this.style.background = '#bbdefb';
+                    this.style.fontStyle = 'normal';
+                    this.style.opacity = '1';
+                    this.contentEditable = false;
+                }
+            });
+            
+            // Handle Enter key
+            span.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.blur();
+                }
+            });
         }
 
         function checkTranscription(button) {
