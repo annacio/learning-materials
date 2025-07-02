@@ -269,51 +269,42 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .blank-space {
-            display: inline-block;
-            min-width: 120px;
-            border-bottom: 2px dashed #a0aec0;
-            cursor: pointer;
-            padding: 4px 8px;
-            text-align: center;
-            color: #4a5568;
-            font-weight: 500;
-            background-color: #f7fafc;
+        .answer-select {
+            background: white;
+            border: 2px solid #4299e1;
             border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0 8px;
+            cursor: pointer;
+            outline: none;
             transition: all 0.3s ease;
         }
 
-        .blank-space:hover {
-            background-color: #edf2f7;
-            border-bottom-color: #4299e1;
-            transform: translateY(-1px);
+        .answer-select:focus {
+            border-color: #2b6cb0;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
         }
 
-        .blank-space.filled {
-            font-style: normal;
-            background-color: #e6fffa;
-            border-bottom-color: #38b2ac;
-            color: #2d3748;
-            font-weight: 600;
+        .answer-select.correct {
+            border-color: #48bb78;
+            background-color: #f0fff4;
         }
 
-        .blank-space.correct {
-            background-color: #c6f6d5;
-            border-bottom-color: #48bb78;
-            color: #22543d;
-        }
-
-        .blank-space.incorrect {
+        .answer-select.incorrect {
+            border-color: #f56565;
             background-color: #fed7d7;
-            border-bottom-color: #f56565;
-            color: #742a2a;
-            animation: shake 0.5s ease-in-out;
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+        .answer-feedback {
+            margin-top: 15px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            font-size: 1.1rem;
+            min-height: 20px;
         }
 
         .sentence-display {
@@ -529,7 +520,7 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>📝 Professional Hyphen Mastery</h1>
+            <h1>📝 Hyphen Mastery</h1>
             <p class="subtitle">Master the art of proper hyphenation in professional transcription</p>
             <div class="progress-container">
                 <div class="progress-bar">
@@ -878,64 +869,44 @@
             }
         }
 
-        function toggleHyphen(span) {
-            const word = span.dataset.word;
-            const next = span.dataset.next;
-            const withHyphen = `${word}-${next}`;
-            const withoutHyphen = `${word} ${next}`;
-            
-            if (!span.classList.contains('filled')) {
-                span.textContent = withHyphen;
-                span.classList.add('filled');
-            } else if (span.textContent === withHyphen) {
-                span.textContent = withoutHyphen;
-            } else {
-                span.textContent = withHyphen;
-            }
-        }
-
-        function checkTranscription(button) {
+        function checkDropdownAnswer(button) {
             const exercise = button.closest('.audio-exercise');
-            const blankSpan = exercise.querySelector('.blank-space');
-            const correctAnswer = blankSpan.dataset.correct;
-            const userAnswer = blankSpan.textContent.trim();
+            const select = exercise.querySelector('.answer-select');
+            const feedback = exercise.querySelector('.answer-feedback');
+            const correctAnswer = select.dataset.correct;
+            const userAnswer = select.value;
             
-            console.log('Checking answer:', userAnswer, 'vs correct:', correctAnswer); // Debug log
-            
-            if (!blankSpan.classList.contains('filled') || userAnswer === 'click to fill') {
-                showAnswerPopup(false, 'Please fill in the blank first by clicking on it!', '', correctAnswer);
+            if (userAnswer === "") {
+                feedback.textContent = "⚠️ Please select an answer.";
+                feedback.style.color = "orange";
+                feedback.style.background = "#fff3cd";
+                feedback.style.border = "2px solid #ffc107";
                 return;
             }
             
-            // Check if answer is correct
-            const isCorrect = userAnswer === correctAnswer;
-            
-            console.log('Is correct:', isCorrect); // Debug log
-            
-            // Update span styling
-            blankSpan.classList.remove('correct', 'incorrect');
-            blankSpan.classList.add(isCorrect ? 'correct' : 'incorrect');
-            
-            // Disable span and button
-            blankSpan.onclick = null;
-            blankSpan.style.cursor = 'default';
-            button.disabled = true;
-            button.textContent = 'Submitted';
-            
             // Update stats
             totalAttempts++;
-            if (isCorrect) {
+            
+            if (userAnswer === correctAnswer) {
+                feedback.textContent = "✅ Correct! Well done!";
+                feedback.style.color = "#22543d";
+                feedback.style.background = "#c6f6d5";
+                feedback.style.border = "2px solid #48bb78";
+                select.classList.add('correct');
                 correctAnswers++;
                 completedExercises++;
+            } else {
+                feedback.textContent = `❌ Incorrect. The correct answer is "${correctAnswer}".`;
+                feedback.style.color = "#742a2a";
+                feedback.style.background = "#fed7d7";
+                feedback.style.border = "2px solid #f56565";
+                select.classList.add('incorrect');
             }
             
-            // Show popup with feedback
-            console.log('About to show popup'); // Debug log
-            if (isCorrect) {
-                showAnswerPopup(true, 'Perfect! You got it right!', userAnswer, correctAnswer);
-            } else {
-                showAnswerPopup(false, 'Not quite right. Here\'s the correct answer:', userAnswer, correctAnswer);
-            }
+            // Disable select and button
+            select.disabled = true;
+            button.disabled = true;
+            button.textContent = 'Submitted';
             
             updateProgress();
         }
