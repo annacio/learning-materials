@@ -177,93 +177,6 @@
             color: #c05621;
         }
 
-        /* Section A Styles */
-        .exercise-text {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 12px;
-            padding: 25px;
-            margin: 20px 0;
-            font-size: 1.1rem;
-            line-height: 1.8;
-        }
-
-        .clickable-word {
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            position: relative;
-            display: inline-block;
-        }
-
-        .clickable-word:hover {
-            background: #fed7d7;
-            transform: scale(1.05);
-        }
-
-        .clickable-word.correct {
-            background: #c6f6d5;
-            color: #22543d;
-            cursor: default;
-        }
-
-        .clickable-word.incorrect {
-            background: #fed7d7;
-            color: #742a2a;
-            animation: shake 0.5s ease-in-out;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        /* Word Explanation Popup Styles */
-        .word-explanation-popup {
-            position: fixed;
-            background: #1a202c;
-            color: white;
-            padding: 0;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            z-index: 2000;
-            max-width: 350px;
-            min-width: 280px;
-            opacity: 0;
-            transform: translate(-50%, -100%) scale(0.8);
-            transition: all 0.3s ease;
-        }
-
-        .word-explanation-popup.show {
-            opacity: 1;
-            transform: translate(-50%, -100%) scale(1);
-        }
-
-        .word-explanation-popup.fade-out {
-            opacity: 0;
-            transform: translate(-50%, -100%) scale(0.9);
-        }
-
-        .popup-content {
-            padding: 20px;
-            line-height: 1.5;
-            text-align: center;
-        }
-
-        .popup-arrow {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-top: 12px solid #1a202c;
-        }
-
         /* Section B Styles */
         .quiz-question {
             background: #f7fafc;
@@ -348,30 +261,39 @@
             background: white;
             border: 2px solid #d6d3d1;
             border-radius: 10px;
-            padding: 20px;
+            padding: 25px;
             margin: 20px 0;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            text-align: left;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .transcription-input {
-            border: none;
-            border-bottom: 3px solid #4299e1;
-            background: transparent;
-            padding: 4px 8px;
+            background: #f7fafc;
+            border: 2px dashed #cbd5e0;
+            border-radius: 4px;
+            padding: 8px 12px;
             font-size: 1.1rem;
             font-weight: 500;
-            min-width: 140px;
-            max-width: 180px;
-            margin: 0 4px;
+            min-width: 160px;
+            max-width: 200px;
+            margin: 0 6px;
             transition: all 0.3s ease;
             text-align: center;
+            outline: none;
+        }
+
+        .transcription-input::placeholder {
+            color: #a0aec0;
+            font-style: italic;
+            font-weight: normal;
         }
 
         .transcription-input:focus {
-            outline: none;
             border-color: #4299e1;
+            border-style: solid;
+            background: #ebf8ff;
             box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
         }
 
@@ -568,11 +490,9 @@
             }
         }
 
-        .section-a { background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%); }
         .section-b { background: linear-gradient(135deg, #fef5e7 0%, #fed7aa 100%); }
         .section-c { background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%); }
 
-        .section-a .section-header { background: linear-gradient(135deg, #38b2ac 0%, #319795 100%); }
         .section-b .section-header { background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%); }
         .section-c .section-header { background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); }
     </style>
@@ -588,7 +508,7 @@
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
                 <div class="progress-stats">
-                    <span>Completed: <span id="completedCount">0</span>/15</span>
+                    <span>Completed: <span id="completedCount">0</span>/10</span>
                     <span>Accuracy: <span id="accuracyRate">0%</span></span>
                 </div>
             </div>
@@ -636,51 +556,10 @@
             </div>
         </div>
 
-        <!-- Section A: Click to Identify -->
-        <div class="section section-a">
-            <div class="section-header" onclick="toggleSection(this)">
-                <h2>🎯 Section A: Identify Incorrect Usage</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="section-content">
-                <p><strong>Instructions:</strong> Click on words that are incorrectly hyphenated. A popup will explain why each correction is needed.</p>
-                
-                <div class="exercise-text" data-exercise="a1">
-                    The <span class="clickable-word" data-correct="project manager" data-explanation="Job titles like 'project manager' don't need hyphens when used as nouns.">project-manager</span> 
-                    scheduled a <span class="clickable-word" data-correct="high priority" data-explanation="When adjectives come after 'a/an', they typically don't need hyphens.">high-priority</span> 
-                    meeting for <span class="clickable-word" data-correct="next Tuesday" data-explanation="Time references like 'next Tuesday' are separate words, not compound terms.">next-Tuesday</span>.
-                </div>
-
-                <div class="exercise-text" data-exercise="a2">
-                    The <span class="clickable-word" data-correct="client service" data-explanation="Department names like 'client service' are typically written as separate words.">client-service</span> 
-                    team delivered <span class="clickable-word" data-correct="top quality" data-explanation="Descriptive phrases after verbs don't need hyphens unless they're established compound terms.">top-quality</span> 
-                    results during the <span class="clickable-word" data-correct="fourth quarter" data-explanation="Time periods like 'fourth quarter' are separate words.">fourth-quarter</span> review.
-                </div>
-
-                <div class="exercise-text" data-exercise="a3">
-                    Our <span class="clickable-word" data-correct="market research" data-explanation="Industry terms like 'market research' are established as separate words.">market-research</span> 
-                    shows that <span class="clickable-word" data-correct="decision makers" data-explanation="'Decision makers' as a noun phrase doesn't require hyphens.">decision-makers</span> 
-                    prefer <span class="clickable-word" data-correct="user friendly" data-explanation="When adjectives follow 'prefer' or similar verbs, they don't need hyphens.">user-friendly</span> interfaces.
-                </div>
-
-                <div class="exercise-text" data-exercise="a4">
-                    The <span class="clickable-word" data-correct="sales report" data-explanation="Business document names like 'sales report' are separate words.">sales-report</span> 
-                    indicated <span class="clickable-word" data-correct="year over year" data-explanation="Comparative phrases like 'year over year' don't need hyphens when standing alone.">year-over-year</span> 
-                    growth in our <span class="clickable-word" data-correct="customer base" data-explanation="Business terms like 'customer base' are written as separate words.">customer-base</span>.
-                </div>
-
-                <div class="exercise-text" data-exercise="a5">
-                    We implemented <span class="clickable-word" data-correct="best practices" data-explanation="Standard phrases like 'best practices' don't require hyphens.">best-practices</span> 
-                    for <span class="clickable-word" data-correct="data entry" data-explanation="Process names like 'data entry' are separate words.">data-entry</span> 
-                    and <span class="clickable-word" data-correct="quality assurance" data-explanation="Department functions like 'quality assurance' are written separately.">quality-assurance</span> procedures.
-                </div>
-            </div>
-        </div>
-
-        <!-- Section B: Multiple Choice -->
+        <!-- Section A: Multiple Choice -->
         <div class="section section-b">
             <div class="section-header" onclick="toggleSection(this)">
-                <h2>✅ Section B: Choose the Correct Usage</h2>
+                <h2>✅ Section A: Choose the Correct Usage</h2>
                 <span class="toggle-icon">▼</span>
             </div>
             <div class="section-content">
@@ -733,10 +612,10 @@
             </div>
         </div>
 
-        <!-- Section C: Audio Transcription -->
+        <!-- Section B: Audio Transcription -->
         <div class="section section-c">
             <div class="section-header" onclick="toggleSection(this)">
-                <h2>🎧 Section C: Audio Transcription Challenge</h2>
+                <h2>🎧 Section B: Audio Transcription Challenge</h2>
                 <span class="toggle-icon">▼</span>
             </div>
             <div class="section-content">
@@ -809,21 +688,15 @@
 
     <script>
         // Initialize variables
-        let totalExercises = 15;
+        let totalExercises = 10;
         let completedExercises = 0;
         let correctAnswers = 0;
         let totalAttempts = 0;
 
         // Initialize the training
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Training initialized'); // Debug log
+            console.log('Training initialized');
             updateProgress();
-            
-            // Setup Section A with a small delay to ensure DOM is fully ready
-            setTimeout(() => {
-                setupSectionA();
-            }, 50);
-            
             setupSectionC();
             
             // Setup audio with slight delay to ensure voices are loaded
@@ -849,84 +722,6 @@
         function toggleSection(header) {
             const section = header.parentElement;
             section.classList.toggle('collapsed');
-        }
-
-        // Setup Section A click handlers
-        function setupSectionA() {
-            const clickableWords = document.querySelectorAll('.clickable-word');
-            console.log(`Found ${clickableWords.length} clickable words`); // Debug log
-            
-            clickableWords.forEach((word, index) => {
-                console.log(`Setting up word ${index + 1}: "${word.textContent}"`); // Debug log
-                word.addEventListener('click', function() {
-                    console.log(`Clicked on: "${this.textContent}"`); // Debug log
-                    handleWordClick(this);
-                });
-                
-                // Add visual indicator that words are clickable
-                word.style.cursor = 'pointer';
-                word.title = 'Click to fix this hyphenation error';
-            });
-        }
-
-        function handleWordClick(word) {
-            if (word.classList.contains('correct')) return;
-
-            const correct = word.dataset.correct;
-            const explanation = word.dataset.explanation;
-            const originalText = word.textContent;
-            
-            // Get word position for popup placement
-            const rect = word.getBoundingClientRect();
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            
-            // Create popup positioned relative to viewport
-            const popup = document.createElement('div');
-            popup.className = 'word-explanation-popup';
-            popup.innerHTML = `
-                <div class="popup-content">
-                    <strong>❌ "${originalText}" → ✅ "${correct}"</strong><br><br>
-                    ${explanation}
-                </div>
-                <div class="popup-arrow"></div>
-            `;
-            
-            // Position popup above the word
-            popup.style.position = 'fixed';
-            popup.style.left = `${rect.left + (rect.width / 2)}px`;
-            popup.style.top = `${rect.top - 10}px`;
-            popup.style.transform = 'translate(-50%, -100%)';
-            popup.style.zIndex = '2000';
-            
-            // Add popup to body
-            document.body.appendChild(popup);
-            
-            // Show popup with animation
-            setTimeout(() => {
-                popup.classList.add('show');
-            }, 10);
-            
-            // Update word appearance
-            word.textContent = correct;
-            word.classList.add('correct');
-            word.style.cursor = 'default';
-            
-            // Update stats
-            totalAttempts++;
-            correctAnswers++;
-            completedExercises++;
-            
-            // Remove popup after 4 seconds
-            setTimeout(() => {
-                popup.classList.add('fade-out');
-                setTimeout(() => {
-                    if (popup.parentNode) {
-                        popup.parentNode.removeChild(popup);
-                    }
-                }, 300);
-            }, 4000);
-            
-            updateProgress();
         }
 
         // Section B: Multiple choice
