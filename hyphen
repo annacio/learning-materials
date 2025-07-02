@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hyphenation Practice</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2em;
+      line-height: 1.6;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    h1, h2 {
+      color: #2c3e50;
+    }
+    .exercise {
+      margin-bottom: 2em;
+    }
+    .answers {
+      background-color: #e8f4ea;
+      padding: 1em;
+      border-left: 4px solid #2ecc71;
+      margin-top: 1em;
+    }
+    code {
+      backgr
