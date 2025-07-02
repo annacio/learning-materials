@@ -194,6 +194,7 @@
             border-radius: 6px;
             transition: all 0.3s ease;
             position: relative;
+            display: inline-block;
         }
 
         .clickable-word:hover {
@@ -222,7 +223,7 @@
         /* Popup Styles */
         .popup {
             position: absolute;
-            top: -120px;
+            top: -140px;
             left: 50%;
             transform: translateX(-50%);
             background: #1a202c;
@@ -231,16 +232,20 @@
             border-radius: 10px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.3);
             z-index: 1000;
-            max-width: 300px;
+            max-width: 320px;
+            min-width: 250px;
             font-size: 0.9rem;
+            line-height: 1.4;
+            text-align: center;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
         .popup.show {
             opacity: 1;
             pointer-events: auto;
+            transform: translateX(-50%) translateY(-5px);
         }
 
         .popup::after {
@@ -344,28 +349,135 @@
             text-align: left;
         }
 
-        .blank-space {
-            display: inline-block;
-            min-width: 80px;
-            height: 25px;
-            border-bottom: 2px solid #4299e1;
-            margin: 0 5px;
-            cursor: pointer;
-            position: relative;
+        .transcription-input {
+            border: 2px solid #cbd5e0;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 1rem;
+            min-width: 120px;
+            max-width: 200px;
+            margin: 0 8px;
+            transition: all 0.3s ease;
         }
 
-        .blank-space.filled {
-            border-bottom-color: #48bb78;
+        .transcription-input:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
         }
 
-        .hyphen-input {
-            position: absolute;
-            top: -5px;
+        .transcription-input.correct {
+            border-color: #48bb78;
+            background-color: #f0fff4;
+        }
+
+        .transcription-input.incorrect {
+            border-color: #f56565;
+            background-color: #fed7d7;
+            animation: inputShake 0.5s ease-in-out;
+        }
+
+        @keyframes inputShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            margin: 15px 0 10px 0;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+        }
+
+        .submit-btn:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+        }
+
+        /* Answer Popup Styles */
+        .answer-popup {
+            position: fixed;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-            font-size: 1.2rem;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            z-index: 2000;
+            max-width: 400px;
+            text-align: center;
+            opacity: 0;
+            scale: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .answer-popup.show {
+            opacity: 1;
+            scale: 1;
+        }
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .popup-overlay.show {
+            opacity: 1;
+        }
+
+        .popup-correct {
+            border: 3px solid #48bb78;
+        }
+
+        .popup-incorrect {
+            border: 3px solid #f56565;
+        }
+
+        .popup-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .popup-title {
+            font-size: 1.5rem;
             font-weight: bold;
-            color: #2b6cb0;
+            margin-bottom: 10px;
+        }
+
+        .popup-message {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .popup-close {
+            background: #4299e1;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .popup-close:hover {
+            background: #3182ce;
+            transform: translateY(-2px);
         }
 
         .feedback {
@@ -490,7 +602,6 @@
                         <h3>✅ Use Hyphens When:</h3>
                         <ul>
                             <li><strong>Compound adjectives before nouns:</strong> "state-of-the-art equipment"</li>
-                            <li><strong>Numbers twenty-one through ninety-nine:</strong> "thirty-seven participants"</li>
                             <li><strong>Compound nouns (established):</strong> "mother-in-law, follow-up"</li>
                             <li><strong>Prefixes with proper nouns:</strong> "pre-Christmas, anti-American"</li>
                         </ul>
@@ -620,7 +731,7 @@
                 <span class="toggle-icon">▼</span>
             </div>
             <div class="section-content">
-                <p><strong>Instructions:</strong> Listen to each audio clip and decide whether to add hyphens in the blanks. Click on the blank spaces to toggle hyphens.</p>
+                <p><strong>Instructions:</strong> Listen to each audio clip (text-to-speech) and decide whether to add hyphens in the blanks. Click on the blank spaces to toggle hyphens.</p>
 
                 <div class="audio-exercise" data-audio="c1">
                     <div class="audio-controls">
@@ -631,9 +742,6 @@
                         We need a <span class="blank-space" data-word="cutting" data-next="edge" data-correct="cutting-edge" onclick="toggleHyphen(this)"></span> solution for our business.
                     </div>
                     <div class="feedback"></div>
-                    <audio id="audio-c1" preload="metadata">
-                        <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=" type="audio/wav">
-                    </audio>
                 </div>
 
                 <div class="audio-exercise" data-audio="c2">
@@ -645,9 +753,6 @@
                         The solution is <span class="blank-space" data-word="cutting" data-next="edge" data-correct="cutting edge" onclick="toggleHyphen(this)"></span> for our industry.
                     </div>
                     <div class="feedback"></div>
-                    <audio id="audio-c2" preload="metadata">
-                        <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=" type="audio/wav">
-                    </audio>
                 </div>
 
                 <div class="audio-exercise" data-audio="c3">
@@ -659,9 +764,6 @@
                         She's a <span class="blank-space" data-word="highly" data-next="skilled" data-correct="highly skilled" onclick="toggleHyphen(this)"></span> professional.
                     </div>
                     <div class="feedback"></div>
-                    <audio id="audio-c3" preload="metadata">
-                        <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=" type="audio/wav">
-                    </audio>
                 </div>
 
                 <div class="audio-exercise" data-audio="c4">
@@ -670,12 +772,9 @@
                         <button class="audio-button" onclick="pauseAudio('c4')">⏸️ Pause</button>
                     </div>
                     <div class="transcription-box">
-                        The <span class="blank-space" data-word="thirty" data-next="seven" data-correct="thirty-seven" onclick="toggleHyphen(this)"></span> participants completed the training.
+                        The project requires <span class="blank-space" data-word="long" data-next="term" data-correct="long-term" onclick="toggleHyphen(this)"></span> commitment from the team.
                     </div>
                     <div class="feedback"></div>
-                    <audio id="audio-c4" preload="metadata">
-                        <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=" type="audio/wav">
-                    </audio>
                 </div>
 
                 <div class="audio-exercise" data-audio="c5">
@@ -687,9 +786,6 @@
                         We're planning a <span class="blank-space" data-word="follow" data-next="up" data-correct="follow-up" onclick="toggleHyphen(this)"></span> meeting next week.
                     </div>
                     <div class="feedback"></div>
-                    <audio id="audio-c5" preload="metadata">
-                        <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=" type="audio/wav">
-                    </audio>
                 </div>
             </div>
         </div>
@@ -712,20 +808,42 @@
         // Initialize the training
         document.addEventListener('DOMContentLoaded', function() {
             updateProgress();
-            setupAudioClips();
+            setupSectionA();
+            setupSectionC();
+            
+            // Setup audio with slight delay to ensure voices are loaded
+            setTimeout(() => {
+                setupAudioClips();
+            }, 100);
         });
+
+        // Setup Section C input handlers
+        function setupSectionC() {
+            // Allow Enter key to submit
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && e.target.classList.contains('transcription-input')) {
+                    const exercise = e.target.closest('.audio-exercise');
+                    const submitBtn = exercise.querySelector('.submit-btn');
+                    if (submitBtn && !submitBtn.disabled) {
+                        checkTranscription(submitBtn);
+                    }
+                }
+            });
+        }
 
         function toggleSection(header) {
             const section = header.parentElement;
             section.classList.toggle('collapsed');
         }
 
-        // Section A: Click to identify
-        document.querySelectorAll('.clickable-word').forEach(word => {
-            word.addEventListener('click', function() {
-                handleWordClick(this);
+        // Setup Section A click handlers
+        function setupSectionA() {
+            document.querySelectorAll('.clickable-word').forEach(word => {
+                word.addEventListener('click', function() {
+                    handleWordClick(this);
+                });
             });
-        });
+        }
 
         function handleWordClick(word) {
             if (word.classList.contains('correct')) return;
@@ -733,11 +851,22 @@
             const correct = word.dataset.correct;
             const explanation = word.dataset.explanation;
             
-            // Create popup
+            // Remove any existing popup first
+            const existingPopup = word.querySelector('.popup');
+            if (existingPopup) {
+                existingPopup.remove();
+            }
+            
+            // Create and show popup
             const popup = document.createElement('div');
-            popup.className = 'popup show';
+            popup.className = 'popup';
             popup.textContent = explanation;
             word.appendChild(popup);
+            
+            // Force reflow and show popup
+            setTimeout(() => {
+                popup.classList.add('show');
+            }, 10);
             
             // Update word
             word.textContent = correct;
@@ -749,11 +878,17 @@
             correctAnswers++;
             completedExercises++;
             
-            // Remove popup after 3 seconds
+            // Remove popup after 4 seconds
             setTimeout(() => {
-                popup.classList.remove('show');
-                setTimeout(() => popup.remove(), 300);
-            }, 3000);
+                if (popup.parentNode) {
+                    popup.classList.remove('show');
+                    setTimeout(() => {
+                        if (popup.parentNode) {
+                            popup.remove();
+                        }
+                    }, 300);
+                }
+            }, 4000);
             
             updateProgress();
         }
@@ -794,84 +929,215 @@
         }
 
         // Section C: Audio transcription
+        // Audio sentences for text-to-speech
+        const audioTexts = {
+            'c1': 'We need a cutting-edge solution for our business.',
+            'c2': 'The solution is cutting edge for our industry.',
+            'c3': 'She\'s a highly skilled professional.',
+            'c4': 'The project requires long-term commitment from the team.',
+            'c5': 'We\'re planning a follow-up meeting next week.'
+        };
+
+        let currentSpeech = null;
+
         function setupAudioClips() {
-            // Create synthetic audio context for demonstration
-            // In a real implementation, you would load actual audio files
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            
-            // Generate simple tones to represent speech
-            ['c1', 'c2', 'c3', 'c4', 'c5'].forEach(id => {
-                const audio = document.getElementById(`audio-${id}`);
-                if (audio) {
-                    // For demo purposes, we'll simulate audio with a placeholder
-                    // In production, replace with actual audio files
-                }
-            });
+            // Check if browser supports speech synthesis
+            if (!('speechSynthesis' in window)) {
+                console.warn('Speech synthesis not supported in this browser');
+                // Disable audio buttons
+                document.querySelectorAll('.audio-button').forEach(btn => {
+                    if (btn.textContent.includes('Play')) {
+                        btn.textContent = '🔇 Audio Not Supported';
+                        btn.disabled = true;
+                    }
+                });
+                return;
+            }
+
+            // Ensure voices are loaded (some browsers need this)
+            if (speechSynthesis.getVoices().length === 0) {
+                speechSynthesis.addEventListener('voiceschanged', setupAudioClips, { once: true });
+                return;
+            }
+
+            console.log('Text-to-speech audio is ready!');
         }
 
         function playAudio(id) {
-            const audio = document.getElementById(`audio-${id}`);
-            if (audio) {
-                // Simulate audio playback
-                console.log(`Playing audio for ${id}`);
-                // In production, use: audio.play();
+            // Stop any currently playing speech
+            if (currentSpeech) {
+                speechSynthesis.cancel();
+            }
+
+            if ('speechSynthesis' in window) {
+                const text = audioTexts[id];
+                if (text) {
+                    currentSpeech = new SpeechSynthesisUtterance(text);
+                    
+                    // Configure speech settings
+                    currentSpeech.rate = 0.8; // Slightly slower for transcription practice
+                    currentSpeech.pitch = 1;
+                    currentSpeech.volume = 1;
+                    
+                    // Try to use a professional voice
+                    const voices = speechSynthesis.getVoices();
+                    const preferredVoice = voices.find(voice => 
+                        voice.lang.startsWith('en') && 
+                        (voice.name.includes('Google') || voice.name.includes('Microsoft'))
+                    ) || voices.find(voice => voice.lang.startsWith('en'));
+                    
+                    if (preferredVoice) {
+                        currentSpeech.voice = preferredVoice;
+                    }
+
+                    // Update button during playback
+                    const playButton = document.querySelector(`[onclick="playAudio('${id}')"]`);
+                    if (playButton) {
+                        playButton.textContent = '🔊 Playing...';
+                        playButton.disabled = true;
+                    }
+
+                    // Reset button when done
+                    currentSpeech.onend = function() {
+                        if (playButton) {
+                            playButton.textContent = '▶️ Play Audio';
+                            playButton.disabled = false;
+                        }
+                        currentSpeech = null;
+                    };
+
+                    speechSynthesis.speak(currentSpeech);
+                }
+            } else {
+                alert('Audio playback is not supported in your browser. Please try a modern browser like Chrome, Firefox, or Safari.');
             }
         }
 
         function pauseAudio(id) {
-            const audio = document.getElementById(`audio-${id}`);
-            if (audio) {
-                // Simulate audio pause
-                console.log(`Pausing audio for ${id}`);
-                // In production, use: audio.pause();
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+                
+                // Reset play button
+                const playButton = document.querySelector(`[onclick="playAudio('${id}')"]`);
+                if (playButton) {
+                    playButton.textContent = '▶️ Play Audio';
+                    playButton.disabled = false;
+                }
+                
+                currentSpeech = null;
             }
         }
 
-        function toggleHyphen(blank) {
-            const word1 = blank.dataset.word;
-            const word2 = blank.dataset.next;
-            const correctAnswer = blank.dataset.correct;
-            const exercise = blank.closest('.audio-exercise');
-            const feedback = exercise.querySelector('.feedback');
+        function checkTranscription(button) {
+            const exercise = button.closest('.audio-exercise');
+            const input = exercise.querySelector('.transcription-input');
+            const correctAnswer = input.dataset.correct;
+            const userAnswer = input.value.trim().toLowerCase();
+            const correctAnswerLower = correctAnswer.toLowerCase();
             
-            if (blank.classList.contains('filled')) return;
-            
-            // Get current content or initialize
-            let currentContent = blank.querySelector('.hyphen-input')?.textContent || '';
-            
-            // Toggle between no hyphen, hyphen, and final answer
-            if (currentContent === '') {
-                currentContent = `${word1}-${word2}`;
-            } else if (currentContent === `${word1}-${word2}`) {
-                currentContent = `${word1} ${word2}`;
-            } else {
-                // Submit answer
-                const isCorrect = currentContent === correctAnswer;
-                blank.classList.add('filled');
-                blank.style.cursor = 'default';
-                
-                totalAttempts++;
-                if (isCorrect) {
-                    correctAnswers++;
-                    completedExercises++;
-                    showFeedback(feedback, true, `✅ Perfect! "${correctAnswer}" is correct.`);
-                } else {
-                    showFeedback(feedback, false, `❌ Not quite. The correct answer is "${correctAnswer}".`);
-                }
-                
-                updateProgress();
+            if (!userAnswer) {
+                showAnswerPopup(false, 'Please type your answer first!', '', correctAnswer);
                 return;
             }
             
-            // Update display
-            let inputSpan = blank.querySelector('.hyphen-input');
-            if (!inputSpan) {
-                inputSpan = document.createElement('span');
-                inputSpan.className = 'hyphen-input';
-                blank.appendChild(inputSpan);
+            // Check if answer is correct
+            const isCorrect = userAnswer === correctAnswerLower;
+            
+            // Update input styling
+            input.classList.remove('correct', 'incorrect');
+            input.classList.add(isCorrect ? 'correct' : 'incorrect');
+            
+            // Disable input and button
+            input.disabled = true;
+            button.disabled = true;
+            button.textContent = 'Submitted';
+            
+            // Update stats
+            totalAttempts++;
+            if (isCorrect) {
+                correctAnswers++;
+                completedExercises++;
             }
-            inputSpan.textContent = currentContent;
+            
+            // Show popup with feedback
+            if (isCorrect) {
+                showAnswerPopup(true, 'Perfect! You got it right!', userAnswer, correctAnswer);
+            } else {
+                showAnswerPopup(false, 'Not quite right. Here\'s the correct answer:', userAnswer, correctAnswer);
+            }
+            
+            updateProgress();
         }
+
+        function showAnswerPopup(isCorrect, message, userAnswer, correctAnswer) {
+            // Create overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'popup-overlay';
+            
+            // Create popup
+            const popup = document.createElement('div');
+            popup.className = `answer-popup ${isCorrect ? 'popup-correct' : 'popup-incorrect'}`;
+            
+            const icon = isCorrect ? '🎉' : '❌';
+            const title = isCorrect? 'Correct!' : 'Incorrect';
+            
+            let detailMessage = message;
+            if (!isCorrect && userAnswer) {
+                detailMessage += `<br><br><strong>You typed:</strong> "${userAnswer}"<br><strong>Correct answer:</strong> "${correctAnswer}"`;
+            } else if (isCorrect) {
+                detailMessage += `<br><br><strong>Answer:</strong> "${correctAnswer}"`;
+            }
+            
+            popup.innerHTML = `
+                <div class="popup-icon">${icon}</div>
+                <div class="popup-title">${title}</div>
+                <div class="popup-message">${detailMessage}</div>
+                <button class="popup-close" onclick="closeAnswerPopup()">Continue</button>
+            `;
+            
+            // Add to page
+            document.body.appendChild(overlay);
+            document.body.appendChild(popup);
+            
+            // Show with animation
+            setTimeout(() => {
+                overlay.classList.add('show');
+                popup.classList.add('show');
+            }, 10);
+            
+            // Store references for closing
+            window.currentPopup = popup;
+            window.currentOverlay = overlay;
+        }
+
+        function closeAnswerPopup() {
+            if (window.currentPopup && window.currentOverlay) {
+                window.currentPopup.classList.remove('show');
+                window.currentOverlay.classList.remove('show');
+                
+                setTimeout(() => {
+                    if (window.currentPopup.parentNode) {
+                        window.currentPopup.parentNode.removeChild(window.currentPopup);
+                    }
+                    if (window.currentOverlay.parentNode) {
+                        window.currentOverlay.parentNode.removeChild(window.currentOverlay);
+                    }
+                    window.currentPopup = null;
+                    window.currentOverlay = null;
+                }, 300);
+            }
+        }
+
+        // Allow Enter key to submit
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target.classList.contains('transcription-input')) {
+                const exercise = e.target.closest('.audio-exercise');
+                const submitBtn = exercise.querySelector('.submit-btn');
+                if (submitBtn && !submitBtn.disabled) {
+                    checkTranscription(submitBtn);
+                }
+            }
+        });
 
         function showFeedback(feedbackEl, correct, message) {
             feedbackEl.textContent = message;
