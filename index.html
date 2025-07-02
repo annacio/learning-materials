@@ -220,42 +220,48 @@
             75% { transform: translateX(5px); }
         }
 
-        /* Popup Styles */
-        .popup {
-            position: absolute;
-            top: -140px;
-            left: 50%;
-            transform: translateX(-50%);
+        /* Word Explanation Popup Styles */
+        .word-explanation-popup {
+            position: fixed;
             background: #1a202c;
             color: white;
-            padding: 15px 20px;
-            border-radius: 10px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-            z-index: 1000;
-            max-width: 320px;
-            min-width: 250px;
-            font-size: 0.9rem;
-            line-height: 1.4;
-            text-align: center;
+            padding: 0;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            z-index: 2000;
+            max-width: 350px;
+            min-width: 280px;
             opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translate(-50%, -100%) scale(0.8);
+            transition: all 0.3s ease;
         }
 
-        .popup.show {
+        .word-explanation-popup.show {
             opacity: 1;
-            pointer-events: auto;
-            transform: translateX(-50%) translateY(-5px);
+            transform: translate(-50%, -100%) scale(1);
         }
 
-        .popup::after {
-            content: '';
+        .word-explanation-popup.fade-out {
+            opacity: 0;
+            transform: translate(-50%, -100%) scale(0.9);
+        }
+
+        .popup-content {
+            padding: 20px;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .popup-arrow {
             position: absolute;
             top: 100%;
             left: 50%;
             transform: translateX(-50%);
-            border: 8px solid transparent;
-            border-top-color: #1a202c;
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 12px solid #1a202c;
         }
 
         /* Section B Styles */
@@ -350,14 +356,17 @@
         }
 
         .transcription-input {
-            border: 2px solid #cbd5e0;
-            border-radius: 6px;
-            padding: 8px 12px;
-            font-size: 1rem;
-            min-width: 120px;
-            max-width: 200px;
-            margin: 0 8px;
+            border: none;
+            border-bottom: 3px solid #4299e1;
+            background: transparent;
+            padding: 4px 8px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            min-width: 140px;
+            max-width: 180px;
+            margin: 0 4px;
             transition: all 0.3s ease;
+            text-align: center;
         }
 
         .transcription-input:focus {
@@ -807,8 +816,14 @@
 
         // Initialize the training
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('Training initialized'); // Debug log
             updateProgress();
-            setupSectionA();
+            
+            // Setup Section A with a small delay to ensure DOM is fully ready
+            setTimeout(() => {
+                setupSectionA();
+            }, 50);
+            
             setupSectionC();
             
             // Setup audio with slight delay to ensure voices are loaded
@@ -838,10 +853,19 @@
 
         // Setup Section A click handlers
         function setupSectionA() {
-            document.querySelectorAll('.clickable-word').forEach(word => {
+            const clickableWords = document.querySelectorAll('.clickable-word');
+            console.log(`Found ${clickableWords.length} clickable words`); // Debug log
+            
+            clickableWords.forEach((word, index) => {
+                console.log(`Setting up word ${index + 1}: "${word.textContent}"`); // Debug log
                 word.addEventListener('click', function() {
+                    console.log(`Clicked on: "${this.textContent}"`); // Debug log
                     handleWordClick(this);
                 });
+                
+                // Add visual indicator that words are clickable
+                word.style.cursor = 'pointer';
+                word.title = 'Click to fix this hyphenation error';
             });
         }
 
@@ -850,25 +874,39 @@
 
             const correct = word.dataset.correct;
             const explanation = word.dataset.explanation;
+            const originalText = word.textContent;
             
-            // Remove any existing popup first
-            const existingPopup = word.querySelector('.popup');
-            if (existingPopup) {
-                existingPopup.remove();
-            }
+            // Get word position for popup placement
+            const rect = word.getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             
-            // Create and show popup
+            // Create popup positioned relative to viewport
             const popup = document.createElement('div');
-            popup.className = 'popup';
-            popup.textContent = explanation;
-            word.appendChild(popup);
+            popup.className = 'word-explanation-popup';
+            popup.innerHTML = `
+                <div class="popup-content">
+                    <strong>❌ "${originalText}" → ✅ "${correct}"</strong><br><br>
+                    ${explanation}
+                </div>
+                <div class="popup-arrow"></div>
+            `;
             
-            // Force reflow and show popup
+            // Position popup above the word
+            popup.style.position = 'fixed';
+            popup.style.left = `${rect.left + (rect.width / 2)}px`;
+            popup.style.top = `${rect.top - 10}px`;
+            popup.style.transform = 'translate(-50%, -100%)';
+            popup.style.zIndex = '2000';
+            
+            // Add popup to body
+            document.body.appendChild(popup);
+            
+            // Show popup with animation
             setTimeout(() => {
                 popup.classList.add('show');
             }, 10);
             
-            // Update word
+            // Update word appearance
             word.textContent = correct;
             word.classList.add('correct');
             word.style.cursor = 'default';
@@ -880,14 +918,12 @@
             
             // Remove popup after 4 seconds
             setTimeout(() => {
-                if (popup.parentNode) {
-                    popup.classList.remove('show');
-                    setTimeout(() => {
-                        if (popup.parentNode) {
-                            popup.remove();
-                        }
-                    }, 300);
-                }
+                popup.classList.add('fade-out');
+                setTimeout(() => {
+                    if (popup.parentNode) {
+                        popup.parentNode.removeChild(popup);
+                    }
+                }, 300);
             }, 4000);
             
             updateProgress();
