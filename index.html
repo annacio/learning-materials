@@ -1,532 +1,898 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Interactive Hyphen Usage Training</title> <style> * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        line-height: 1.6;
-        color: #333;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Hyphen Mastery Training</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .container {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 20px;
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
 
-    .header {
-        background: white;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        margin-bottom: 30px;
-        text-align: center;
-    }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-    .header h1 {
-        color: #4a5568;
-        margin-bottom: 10px;
-        font-size: 2.5rem;
-    }
+        .header {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
 
-    .progress-bar {
-        width: 100%;
-        height: 8px;
-        background: #e2e8f0;
-        border-radius: 4px;
-        margin: 20px 0;
-        overflow: hidden;
-    }
+        .header h1 {
+            color: #2b6cb0;
+            margin-bottom: 15px;
+            font-size: 2.8rem;
+            font-weight: 700;
+        }
 
-    .progress-fill {
-        height: 100%;
-        background: linear-gradient(90deg, #48bb78, #38a169);
-        width: 0%;
-        transition: width 0.5s ease;
-    }
+        .subtitle {
+            color: #4a5568;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+        }
 
-    .score {
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: #4a5568;
-    }
+        .progress-container {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
 
-    .section {
-        background: white;
-        margin-bottom: 30px;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        overflow: hidden;
-    }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
 
-    .section-header {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        color: white;
-        padding: 20px;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: all 0.3s ease;
-    }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+            width: 0%;
+            transition: width 0.8s ease;
+        }
 
-    .section-header:hover {
-        transform: translateY(-2px);
-    }
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            color: #2d3748;
+        }
 
-    .section-header h2 {
-        font-size: 1.5rem;
-    }
+        .section {
+            background: white;
+            margin-bottom: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
 
-    .toggle-icon {
-        font-size: 1.5rem;
-        transition: transform 0.3s ease;
-    }
+        .section-header {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            color: white;
+            padding: 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
 
-    .section.collapsed .toggle-icon {
-        transform: rotate(180deg);
-    }
+        .section-header:hover {
+            background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+        }
 
-    .section-content {
-        padding: 30px;
-        display: block;
-    }
+        .section-header h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
 
-    .section.collapsed .section-content {
-        display: none;
-    }
+        .toggle-icon {
+            font-size: 1.8rem;
+            transition: transform 0.3s ease;
+        }
 
-    .exercise {
-        background: #f7fafc;
-        border: 2px solid #e2e8f0;
-        border-radius: 10px;
-        padding: 20px;
-        margin: 20px 0;
-        transition: all 0.3s ease;
-    }
+        .section.collapsed .toggle-icon {
+            transform: rotate(180deg);
+        }
 
-    .exercise:hover {
-        border-color: #4facfe;
-        transform: translateY(-2px);
-    }
+        .section-content {
+            padding: 35px;
+            display: block;
+        }
 
-    .exercise-question {
-        font-size: 1.1rem;
-        margin-bottom: 15px;
-        font-weight: 600;
-    }
+        .section.collapsed .section-content {
+            display: none;
+        }
 
-    .hyphen-text {
-        font-size: 1.2rem;
-        line-height: 2;
-        margin: 15px 0;
-    }
+        .definition-box {
+            background: linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%);
+            border: 2px solid #4299e1;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
 
-    .hyphen-word {
-        background: #fed7d7;
-        padding: 4px 8px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: 2px solid transparent;
-    }
+        .definition-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c5282;
+            margin-bottom: 12px;
+        }
 
-    .hyphen-word:hover {
-        background: #fbb6ce;
-        transform: scale(1.05);
-    }
+        .rule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 25px 0;
+        }
 
-    .hyphen-word.correct {
-        background: #c6f6d5;
-        border-color: #48bb78;
-    }
+        .rule-card {
+            background: #f0fff4;
+            border: 3px solid #48bb78;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
 
-    .hyphen-word.incorrect {
-        background: #fed7d7;
-        border-color: #f56565;
-        animation: shake 0.5s ease-in-out;
-    }
+        .rule-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);
+        }
 
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        25% { transform: translateX(-5px); }
-        75% { transform: translateX(5px); }
-    }
+        .rule-card h3 {
+            color: #22543d;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
 
-    .feedback {
-        margin-top: 15px;
-        padding: 15px;
-        border-radius: 8px;
-        font-weight: 600;
-        text-align: center;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
+        .examples {
+            background: #fffaf0;
+            border-left: 4px solid #ed8936;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
 
-    .feedback.show {
-        opacity: 1;
-    }
+        .examples strong {
+            color: #c05621;
+        }
 
-    .feedback.correct {
-        background: #c6f6d5;
-        color: #276749;
-        border: 2px solid #48bb78;
-    }
+        /* Section A Styles */
+        .exercise-text {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
 
-    .feedback.incorrect {
-        background: #fed7d7;
-        color: #742a2a;
-        border: 2px solid #f56565;
-    }
+        .clickable-word {
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
 
-    .quiz-section {
-        background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-    }
+        .clickable-word:hover {
+            background: #fed7d7;
+            transform: scale(1.05);
+        }
 
-    .quiz-section .section-header {
-        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-    }
+        .clickable-word.correct {
+            background: #c6f6d5;
+            color: #22543d;
+            cursor: default;
+        }
 
-    .multiple-choice {
-        margin: 15px 0;
-    }
+        .clickable-word.incorrect {
+            background: #fed7d7;
+            color: #742a2a;
+            animation: shake 0.5s ease-in-out;
+        }
 
-    .choice {
-        background: white;
-        border: 2px solid #e2e8f0;
-        border-radius: 8px;
-        padding: 15px;
-        margin: 10px 0;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
 
-    .choice:hover {
-        border-color: #4facfe;
-        transform: translateX(5px);
-    }
-
-    .choice.selected {
-        background: #ebf8ff;
-        border-color: #4299e1;
-    }
-
-    .choice.correct-answer {
-        background: #c6f6d5;
-        border-color: #48bb78;
-    }
-
-    .choice.wrong-answer {
-        background: #fed7d7;
-        border-color: #f56565;
-    }
-
-    .btn {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        padding: 12px 30px;
-        border-radius: 25px;
-        cursor: pointer;
-        font-size: 1rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        margin: 10px 5px;
-    }
-
-    .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-
-    .btn:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none;
-    }
-
-    .rules-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-        margin: 20px 0;
-    }
-
-    .rule-card {
-        background: #f0fff4;
-        border: 2px solid #48bb78;
-        border-radius: 10px;
-        padding: 20px;
-        transition: transform 0.3s ease;
-    }
-
-    .rule-card:hover {
-        transform: translateY(-5px);
-    }
-
-    .rule-title {
-        color: #276749;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-
-    .completion-badge {
-        background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
-        color: white;
-        padding: 20px;
-        border-radius: 15px;
-        text-align: center;
-        margin: 20px 0;
-        display: none;
-    }
-
-    .completion-badge.show {
-        display: block;
-        animation: celebrateIn 0.8s ease-out;
-    }
-
-    @keyframes celebrateIn {
-        0% {
-            transform: scale(0.5) rotate(-10deg);
+        /* Popup Styles */
+        .popup {
+            position: absolute;
+            top: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a202c;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            z-index: 1000;
+            max-width: 300px;
+            font-size: 0.9rem;
             opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
         }
-        50% {
-            transform: scale(1.1) rotate(5deg);
+
+        .popup.show {
+            opacity: 1;
+            pointer-events: auto;
         }
-        100% {
-            transform: scale(1) rotate(0deg);
+
+        .popup::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 8px solid transparent;
+            border-top-color: #1a202c;
+        }
+
+        /* Section B Styles */
+        .quiz-question {
+            background: #f7fafc;
+            border: 2px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .choice {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 12px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .choice:hover {
+            border-color: #4299e1;
+            transform: translateX(8px);
+            box-shadow: 0 4px 12px rgba(66, 153, 225, 0.2);
+        }
+
+        .choice.selected {
+            background: #ebf8ff;
+            border-color: #4299e1;
+        }
+
+        .choice.correct-answer {
+            background: #c6f6d5;
+            border-color: #48bb78;
+        }
+
+        .choice.wrong-answer {
+            background: #fed7d7;
+            border-color: #f56565;
+        }
+
+        /* Section C Styles */
+        .audio-exercise {
+            background: linear-gradient(135deg, #faf5ff 0%, #e9d8fd 100%);
+            border: 2px solid #9f7aea;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .audio-controls {
+            margin: 20px 0;
+        }
+
+        .audio-button {
+            background: linear-gradient(135deg, #9f7aea 0%, #805ad5 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .audio-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(159, 122, 234, 0.4);
+        }
+
+        .transcription-box {
+            background: white;
+            border: 2px solid #d6d3d1;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .blank-space {
+            display: inline-block;
+            min-width: 80px;
+            height: 25px;
+            border-bottom: 2px solid #4299e1;
+            margin: 0 5px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .blank-space.filled {
+            border-bottom-color: #48bb78;
+        }
+
+        .hyphen-input {
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2b6cb0;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feedback.show {
             opacity: 1;
         }
-    }
-</style>
-</head> <body> <div class="container"> <div class="header"> <h1>🎯 Interactive Hyphen Mastery</h1> <p>Learn proper hyphen usage through hands-on practice</p> <div class="progress-bar"> <div class="progress-fill" id="progressFill"></div> </div> <div class="score">Score: <span id="scoreDisplay">0/0</span> | Progress: <span id="progressDisplay">0%</span></div> </div>
-    <!-- Rules Section -->
-    <div class="section">
-        <div class="section-header" onclick="toggleSection(this)">
-            <h2>📚 Key Rules</h2>
-            <span class="toggle-icon">▼</span>
-        </div>
-        <div class="section-content">
-            <div class="rules-grid">
-                <div class="rule-card">
-                    <div class="rule-title">❌ DON'T Use Hyphens:</div>
-                    <p>Most noun phrases and descriptive phrases that come AFTER the noun or stand alone.</p>
-                    <p><strong>Examples:</strong> Friday afternoon, most common types, cost savings</p>
+
+        .feedback.correct {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 2px solid #48bb78;
+        }
+
+        .feedback.incorrect {
+            background: #fed7d7;
+            color: #742a2a;
+            border: 2px solid #f56565;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 10px 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(66, 153, 225, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .completion-celebration {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 30px 0;
+            display: none;
+        }
+
+        .completion-celebration.show {
+            display: block;
+            animation: celebrate 1s ease-out;
+        }
+
+        @keyframes celebrate {
+            0% {
+                transform: scale(0.8) rotate(-5deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1) rotate(2deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .section-a { background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%); }
+        .section-b { background: linear-gradient(135deg, #fef5e7 0%, #fed7aa 100%); }
+        .section-c { background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%); }
+
+        .section-a .section-header { background: linear-gradient(135deg, #38b2ac 0%, #319795 100%); }
+        .section-b .section-header { background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%); }
+        .section-c .section-header { background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📝 Professional Hyphen Mastery</h1>
+            <p class="subtitle">Master the art of proper hyphenation in professional transcription</p>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
                 </div>
-                <div class="rule-card">
-                    <div class="rule-title">✅ DO Use Hyphens:</div>
-                    <p>Compound adjectives that come BEFORE the noun they modify.</p>
-                    <p><strong>Examples:</strong> well-known expert, high-level meeting, long-term strategy</p>
+                <div class="progress-stats">
+                    <span>Completed: <span id="completedCount">0</span>/15</span>
+                    <span>Accuracy: <span id="accuracyRate">0%</span></span>
                 </div>
             </div>
+        </div>
+
+        <!-- Theory Section -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>📖 Understanding Hyphens</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="definition-box">
+                    <div class="definition-title">What is a Hyphen?</div>
+                    <p>A hyphen (-) is a punctuation mark used to join words together or to separate syllables. In transcription work, hyphens are primarily used to create compound words that function as single units of meaning.</p>
+                </div>
+
+                <div class="rule-grid">
+                    <div class="rule-card">
+                        <h3>✅ Use Hyphens When:</h3>
+                        <ul>
+                            <li><strong>Compound adjectives before nouns:</strong> "state-of-the-art equipment"</li>
+                            <li><strong>Numbers twenty-one through ninety-nine:</strong> "thirty-seven participants"</li>
+                            <li><strong>Compound nouns (established):</strong> "mother-in-law, follow-up"</li>
+                            <li><strong>Prefixes with proper nouns:</strong> "pre-Christmas, anti-American"</li>
+                        </ul>
+                    </div>
+                    <div class="rule-card">
+                        <h3>❌ Don't Use Hyphens When:</h3>
+                        <ul>
+                            <li><strong>Adjectives after the noun:</strong> "The equipment is state of the art"</li>
+                            <li><strong>Adverbs ending in -ly:</strong> "highly skilled worker"</li>
+                            <li><strong>Simple descriptive phrases:</strong> "real estate agent, high school student"</li>
+                            <li><strong>Industry standard terms:</strong> "data processing, quality control"</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="examples">
+                    <strong>Industry Examples:</strong><br>
+                    ✅ "We need a well-trained professional" (before noun)<br>
+                    ❌ "The professional is well-trained" → ✅ "The professional is well trained" (after noun)<br><br>
+                    ✅ "This is a cutting-edge solution" (before noun)<br>
+                    ❌ "The solution is cutting-edge" → ✅ "The solution is cutting edge" (after noun)
+                </div>
+            </div>
+        </div>
+
+        <!-- Section A: Click to Identify -->
+        <div class="section section-a">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>🎯 Section A: Identify Incorrect Usage</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <p><strong>Instructions:</strong> Click on words that are incorrectly hyphenated. A popup will explain why each correction is needed.</p>
+                
+                <div class="exercise-text" data-exercise="a1">
+                    The <span class="clickable-word" data-correct="project manager" data-explanation="Job titles like 'project manager' don't need hyphens when used as nouns.">project-manager</span> 
+                    scheduled a <span class="clickable-word" data-correct="high priority" data-explanation="When adjectives come after 'a/an', they typically don't need hyphens.">high-priority</span> 
+                    meeting for <span class="clickable-word" data-correct="next Tuesday" data-explanation="Time references like 'next Tuesday' are separate words, not compound terms.">next-Tuesday</span>.
+                </div>
+
+                <div class="exercise-text" data-exercise="a2">
+                    The <span class="clickable-word" data-correct="client service" data-explanation="Department names like 'client service' are typically written as separate words.">client-service</span> 
+                    team delivered <span class="clickable-word" data-correct="top quality" data-explanation="Descriptive phrases after verbs don't need hyphens unless they're established compound terms.">top-quality</span> 
+                    results during the <span class="clickable-word" data-correct="fourth quarter" data-explanation="Time periods like 'fourth quarter' are separate words.">fourth-quarter</span> review.
+                </div>
+
+                <div class="exercise-text" data-exercise="a3">
+                    Our <span class="clickable-word" data-correct="market research" data-explanation="Industry terms like 'market research' are established as separate words.">market-research</span> 
+                    shows that <span class="clickable-word" data-correct="decision makers" data-explanation="'Decision makers' as a noun phrase doesn't require hyphens.">decision-makers</span> 
+                    prefer <span class="clickable-word" data-correct="user friendly" data-explanation="When adjectives follow 'prefer' or similar verbs, they don't need hyphens.">user-friendly</span> interfaces.
+                </div>
+
+                <div class="exercise-text" data-exercise="a4">
+                    The <span class="clickable-word" data-correct="sales report" data-explanation="Business document names like 'sales report' are separate words.">sales-report</span> 
+                    indicated <span class="clickable-word" data-correct="year over year" data-explanation="Comparative phrases like 'year over year' don't need hyphens when standing alone.">year-over-year</span> 
+                    growth in our <span class="clickable-word" data-correct="customer base" data-explanation="Business terms like 'customer base' are written as separate words.">customer-base</span>.
+                </div>
+
+                <div class="exercise-text" data-exercise="a5">
+                    We implemented <span class="clickable-word" data-correct="best practices" data-explanation="Standard phrases like 'best practices' don't require hyphens.">best-practices</span> 
+                    for <span class="clickable-word" data-correct="data entry" data-explanation="Process names like 'data entry' are separate words.">data-entry</span> 
+                    and <span class="clickable-word" data-correct="quality assurance" data-explanation="Department functions like 'quality assurance' are written separately.">quality-assurance</span> procedures.
+                </div>
+            </div>
+        </div>
+
+        <!-- Section B: Multiple Choice -->
+        <div class="section section-b">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>✅ Section B: Choose the Correct Usage</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <p><strong>Instructions:</strong> Select the sentence with proper hyphen usage.</p>
+
+                <div class="quiz-question" data-quiz="b1">
+                    <div class="question-text">Which sentence demonstrates correct hyphen usage?</div>
+                    <div class="choice" data-correct="false">The team-leader called a last-minute meeting for all staff-members.</div>
+                    <div class="choice" data-correct="true">The team leader called a last-minute meeting for all staff members.</div>
+                    <div class="choice" data-correct="false">The team leader called a last minute meeting for all staff-members.</div>
+                    <div class="choice" data-correct="false">The team-leader called a last minute meeting for all staff members.</div>
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="quiz-question" data-quiz="b2">
+                    <div class="question-text">Select the properly hyphenated sentence:</div>
+                    <div class="choice" data-correct="false">She is a well-known expert in the field and her work is well-known globally.</div>
+                    <div class="choice" data-correct="true">She is a well-known expert in the field and her work is well known globally.</div>
+                    <div class="choice" data-correct="false">She is a well known expert in the field and her work is well-known globally.</div>
+                    <div class="choice" data-correct="false">She is a well known expert in the field and her work is well known globally.</div>
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="quiz-question" data-quiz="b3">
+                    <div class="question-text">Which uses hyphens correctly?</div>
+                    <div class="choice" data-correct="false">The long-term project requires full-time commitment from all team-members.</div>
+                    <div class="choice" data-correct="true">The long-term project requires full-time commitment from all team members.</div>
+                    <div class="choice" data-correct="false">The long term project requires full time commitment from all team-members.</div>
+                    <div class="choice" data-correct="false">The long term project requires full-time commitment from all team members.</div>
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="quiz-question" data-quiz="b4">
+                    <div class="question-text">Choose the correct hyphenation:</div>
+                    <div class="choice" data-correct="true">We need a state-of-the-art system because our current system is out of date.</div>
+                    <div class="choice" data-correct="false">We need a state of the art system because our current system is out-of-date.</div>
+                    <div class="choice" data-correct="false">We need a state-of-the-art system because our current system is out-of-date.</div>
+                    <div class="choice" data-correct="false">We need a state of the art system because our current system is out of date.</div>
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="quiz-question" data-quiz="b5">
+                    <div class="question-text">Which sentence is correctly hyphenated?</div>
+                    <div class="choice" data-correct="false">The company's cost-effective approach led to record-breaking results in the first-quarter.</div>
+                    <div class="choice" data-correct="true">The company's cost-effective approach led to record-breaking results in the first quarter.</div>
+                    <div class="choice" data-correct="false">The company's cost effective approach led to record breaking results in the first-quarter.</div>
+                    <div class="choice" data-correct="false">The company's cost effective approach led to record-breaking results in the first quarter.</div>
+                    <div class="feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section C: Audio Transcription -->
+        <div class="section section-c">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>🎧 Section C: Audio Transcription Challenge</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <p><strong>Instructions:</strong> Listen to each audio clip and decide whether to add hyphens in the blanks. Click on the blank spaces to toggle hyphens.</p>
+
+                <div class="audio-exercise" data-audio="c1">
+                    <div class="audio-controls">
+                        <button class="audio-button" onclick="playAudio('c1')">▶️ Play Audio</button>
+                        <button class="audio-button" onclick="pauseAudio('c1')">⏸️ Pause</button>
+                    </div>
+                    <div class="transcription-box">
+                        We need a <span class="blank-space" data-word="cutting" data-next="edge" data-correct="cutting-edge" onclick="toggleHyphen(this)"></span> solution for our business.
+                    </div>
+                    <div class="feedback"></div>
+                    <audio id="audio-c1" preload="metadata">
+                        <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=" type="audio/wav">
+                    </audio>
+                </div>
+
+                <div class="audio-exercise" data-audio="c2">
+                    <div class="audio-controls">
+                        <button class="audio-button" onclick="playAudio('c2')">▶️ Play Audio</button>
+                        <button class="audio-button" onclick="pauseAudio('c2')">⏸️ Pause</button>
+                    </div>
+                    <div class="transcription-box">
+                        The solution is <span class="blank-space" data-word="cutting" data-next="edge" data-correct="cutting edge" onclick="toggleHyphen(this)"></span> for our industry.
+                    </div>
+                    <div class="feedback"></div>
+                    <audio id="audio-c2" preload="metadata">
+                        <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=" type="audio/wav">
+                    </audio>
+                </div>
+
+                <div class="audio-exercise" data-audio="c3">
+                    <div class="audio-controls">
+                        <button class="audio-button" onclick="playAudio('c3')">▶️ Play Audio</button>
+                        <button class="audio-button" onclick="pauseAudio('c3')">⏸️ Pause</button>
+                    </div>
+                    <div class="transcription-box">
+                        She's a <span class="blank-space" data-word="highly" data-next="skilled" data-correct="highly skilled" onclick="toggleHyphen(this)"></span> professional.
+                    </div>
+                    <div class="feedback"></div>
+                    <audio id="audio-c3" preload="metadata">
+                        <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=" type="audio/wav">
+                    </audio>
+                </div>
+
+                <div class="audio-exercise" data-audio="c4">
+                    <div class="audio-controls">
+                        <button class="audio-button" onclick="playAudio('c4')">▶️ Play Audio</button>
+                        <button class="audio-button" onclick="pauseAudio('c4')">⏸️ Pause</button>
+                    </div>
+                    <div class="transcription-box">
+                        The <span class="blank-space" data-word="thirty" data-next="seven" data-correct="thirty-seven" onclick="toggleHyphen(this)"></span> participants completed the training.
+                    </div>
+                    <div class="feedback"></div>
+                    <audio id="audio-c4" preload="metadata">
+                        <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=" type="audio/wav">
+                    </audio>
+                </div>
+
+                <div class="audio-exercise" data-audio="c5">
+                    <div class="audio-controls">
+                        <button class="audio-button" onclick="playAudio('c5')">▶️ Play Audio</button>
+                        <button class="audio-button" onclick="pauseAudio('c5')">⏸️ Pause</button>
+                    </div>
+                    <div class="transcription-box">
+                        We're planning a <span class="blank-space" data-word="follow" data-next="up" data-correct="follow-up" onclick="toggleHyphen(this)"></span> meeting next week.
+                    </div>
+                    <div class="feedback"></div>
+                    <audio id="audio-c5" preload="metadata">
+                        <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=" type="audio/wav">
+                    </audio>
+                </div>
+            </div>
+        </div>
+
+        <!-- Completion Certificate -->
+        <div class="completion-celebration" id="completionCelebration">
+            <h2>🏆 Congratulations!</h2>
+            <p>You have successfully completed the Professional Hyphen Mastery training!</p>
+            <p>You're now equipped with advanced hyphenation skills for professional transcription.</p>
         </div>
     </div>
 
-    <!-- Interactive Exercises -->
-    <div class="section">
-        <div class="section-header" onclick="toggleSection(this)">
-            <h2>✏️ Fix the Errors</h2>
-            <span class="toggle-icon">▼</span>
-        </div>
-        <div class="section-content">
-            <p><strong>Instructions:</strong> Click on the incorrectly hyphenated words to fix them!</p>
-            
-            <div class="exercise" data-exercise="1">
-                <div class="exercise-question">Exercise 1: Time References</div>
-                <div class="hyphen-text">
-                    We have a meeting scheduled for <span class="hyphen-word" data-original="Friday-afternoon" data-correct="Friday afternoon">Friday-afternoon</span> 
-                    and another one <span class="hyphen-word" data-original="next-week" data-correct="next week">next-week</span>.
-                </div>
-                <div class="feedback"></div>
-            </div>
+    <script>
+        // Initialize variables
+        let totalExercises = 15;
+        let completedExercises = 0;
+        let correctAnswers = 0;
+        let totalAttempts = 0;
 
-            <div class="exercise" data-exercise="2">
-                <div class="exercise-question">Exercise 2: Meeting Types</div>
-                <div class="hyphen-text">
-                    The <span class="hyphen-word" data-original="finalist-meetings" data-correct="finalist meetings">finalist-meetings</span> 
-                    will focus on the <span class="hyphen-word" data-original="most-common" data-correct="most common">most-common</span> issues.
-                </div>
-                <div class="feedback"></div>
-            </div>
+        // Initialize the training
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            setupAudioClips();
+        });
 
-            <div class="exercise" data-exercise="3">
-                <div class="exercise-question">Exercise 3: Business Terms</div>
-                <div class="hyphen-text">
-                    The <span class="hyphen-word" data-original="biannual-review" data-correct="biannual review">biannual-review</span> 
-                    showed significant <span class="hyphen-word" data-original="cost-savings" data-correct="cost savings">cost-savings</span> 
-                    in our <span class="hyphen-word" data-original="lower-level" data-correct="lower level">lower-level</span> operations.
-                </div>
-                <div class="feedback"></div>
-            </div>
+        function toggleSection(header) {
+            const section = header.parentElement;
+            section.classList.toggle('collapsed');
+        }
 
-            <div class="exercise" data-exercise="4">
-                <div class="exercise-question">Exercise 4: Mixed Examples</div>
-                <div class="hyphen-text">
-                    They discussed <span class="hyphen-word" data-original="Preventive-care" data-correct="Preventive care">Preventive-care</span> education 
-                    and identified <span class="hyphen-word" data-original="walking-question-marks" data-correct="walking question marks">walking-question-marks</span> 
-                    regarding the <span class="hyphen-word" data-original="next-level" data-correct="next level">next-level</span> of urgency.
-                </div>
-                <div class="feedback"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Quiz Section -->
-    <div class="section quiz-section">
-        <div class="section-header" onclick="toggleSection(this)">
-            <h2>🧠 Knowledge Check</h2>
-            <span class="toggle-icon">▼</span>
-        </div>
-        <div class="section-content">
-            <div class="exercise" data-quiz="1">
-                <div class="exercise-question">Which sentence uses hyphens correctly?</div>
-                <div class="multiple-choice">
-                    <div class="choice" data-correct="false">The high-priority tasks are due next-week.</div>
-                    <div class="choice" data-correct="true">The high-priority tasks are due next week.</div>
-                    <div class="choice" data-correct="false">The high priority tasks are due next-week.</div>
-                    <div class="choice" data-correct="false">The high priority tasks are due next week.</div>
-                </div>
-                <div class="feedback"></div>
-            </div>
-
-            <div class="exercise" data-quiz="2">
-                <div class="exercise-question">When should you use hyphens?</div>
-                <div class="multiple-choice">
-                    <div class="choice" data-correct="false">Always with time references like "Monday-morning"</div>
-                    <div class="choice" data-correct="true">With compound adjectives before the noun they modify</div>
-                    <div class="choice" data-correct="false">With most business terms like "cost-savings"</div>
-                    <div class="choice" data-correct="false">Whenever two words describe something together</div>
-                </div>
-                <div class="feedback"></div>
-            </div>
-
-            <div class="exercise" data-quiz="3">
-                <div class="exercise-question">Which is correct?</div>
-                <div class="multiple-choice">
-                    <div class="choice" data-correct="false">She's a well-known expert who is well-known in her field.</div>
-                    <div class="choice" data-correct="true">She's a well-known expert who is well known in her field.</div>
-                    <div class="choice" data-correct="false">She's a well known expert who is well-known in her field.</div>
-                    <div class="choice" data-correct="false">She's a well known expert who is well known in her field.</div>
-                </div>
-                <div class="feedback"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Completion Badge -->
-    <div class="completion-badge" id="completionBadge">
-        <h2>🎉 Congratulations!</h2>
-        <p>You've mastered hyphen usage! Your transcription skills just leveled up.</p>
-    </div>
-</div>
-
-<script>
-    let totalExercises = 0;
-    let completedExercises = 0;
-    let correctAnswers = 0;
-    let totalAnswers = 0;
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', function() {
-        totalExercises = document.querySelectorAll('.exercise').length;
-        setupExercises();
-        setupQuizzes();
-        updateProgress();
-    });
-
-    function toggleSection(header) {
-        const section = header.parentElement;
-        section.classList.toggle('collapsed');
-    }
-
-    function setupExercises() {
-        document.querySelectorAll('.hyphen-word').forEach(word => {
+        // Section A: Click to identify
+        document.querySelectorAll('.clickable-word').forEach(word => {
             word.addEventListener('click', function() {
                 handleWordClick(this);
             });
         });
-    }
 
-    function handleWordClick(word) {
-        const correct = word.dataset.correct;
-        const exercise = word.closest('.exercise');
-        const feedback = exercise.querySelector('.feedback');
-        
-        word.textContent = correct;
-        word.classList.add('correct');
-        word.style.pointerEvents = 'none';
-        
-        totalAnswers++;
-        correctAnswers++;
-        
-        showFeedback(feedback, true, `Correct! "${word.dataset.original}" should be "${correct}"`);
-        
-        // Check if exercise is complete
-        const remainingWords = exercise.querySelectorAll('.hyphen-word:not(.correct)');
-        if (remainingWords.length === 0) {
-            completedExercises++;
-            setTimeout(() => {
-                showFeedback(feedback, true, '🎉 Exercise completed! Great job!');
-            }, 1000);
-        }
-        
-        updateProgress();
-    }
+        function handleWordClick(word) {
+            if (word.classList.contains('correct')) return;
 
-    function setupQuizzes() {
-        document.querySelectorAll('[data-quiz] .choice').forEach(choice => {
-            choice.addEventListener('click', function() {
-                handleQuizChoice(this);
-            });
-        });
-    }
-
-    function handleQuizChoice(choice) {
-        const quiz = choice.closest('[data-quiz]');
-        const choices = quiz.querySelectorAll('.choice');
-        const feedback = quiz.querySelector('.feedback');
-        const isCorrect = choice.dataset.correct === 'true';
-        
-        // Disable all choices
-        choices.forEach(c => {
-            c.style.pointerEvents = 'none';
-            if (c.dataset.correct === 'true') {
-                c.classList.add('correct-answer');
-            } else if (c === choice && !isCorrect) {
-                c.classList.add('wrong-answer');
-            }
-        });
-        
-        totalAnswers++;
-        if (isCorrect) {
+            const correct = word.dataset.correct;
+            const explanation = word.dataset.explanation;
+            
+            // Create popup
+            const popup = document.createElement('div');
+            popup.className = 'popup show';
+            popup.textContent = explanation;
+            word.appendChild(popup);
+            
+            // Update word
+            word.textContent = correct;
+            word.classList.add('correct');
+            word.style.cursor = 'default';
+            
+            // Update stats
+            totalAttempts++;
             correctAnswers++;
             completedExercises++;
-            showFeedback(feedback, true, '✅ Correct! Well done!');
-        } else {
-            showFeedback(feedback, false, '❌ Not quite. The correct answer is highlighted in green.');
-        }
-        
-        updateProgress();
-    }
-
-    function showFeedback(feedbackEl, correct, message) {
-        feedbackEl.textContent = message;
-        feedbackEl.className = `feedback ${correct ? 'correct' : 'incorrect'} show`;
-    }
-
-    function updateProgress() {
-        const progress = Math.round((completedExercises / totalExercises) * 100);
-        const accuracy = totalAnswers > 0 ? Math.round((correctAnswers / totalAnswers) * 100) : 0;
-        
-        document.getElementById('progressFill').style.width = progress + '%';
-        document.getElementById('scoreDisplay').textContent = `${correctAnswers}/${totalAnswers}`;
-        document.getElementById('progressDisplay').textContent = `${progress}%`;
-        
-        // Show completion badge
-        if (progress === 100) {
+            
+            // Remove popup after 3 seconds
             setTimeout(() => {
-                document.getElementById('completionBadge').classList.add('show');
-            }, 1000);
+                popup.classList.remove('show');
+                setTimeout(() => popup.remove(), 300);
+            }, 3000);
+            
+            updateProgress();
         }
-    }
-</script>
-</body> </html>
+
+        // Section B: Multiple choice
+        document.querySelectorAll('.choice').forEach(choice => {
+            choice.addEventListener('click', function() {
+                handleChoiceClick(this);
+            });
+        });
+
+        function handleChoiceClick(choice) {
+            const question = choice.closest('.quiz-question');
+            const choices = question.querySelectorAll('.choice');
+            const feedback = question.querySelector('.feedback');
+            const isCorrect = choice.dataset.correct === 'true';
+            
+            // Disable all choices
+            choices.forEach(c => {
+                c.style.pointerEvents = 'none';
+                if (c.dataset.correct === 'true') {
+                    c.classList.add('correct-answer');
+                } else if (c === choice && !isCorrect) {
+                    c.classList.add('wrong-answer');
+                }
+            });
+            
+            totalAttempts++;
+            if (isCorrect) {
+                correctAnswers++;
+                completedExercises++;
+                showFeedback(feedback, true, '✅ Excellent! You identified the correct hyphen usage.');
+            } else {
+                showFeedback(feedback, false, '❌ Not quite right. The correct answer is highlighted in green. Review the pattern!');
+            }
+            
+            updateProgress();
+        }
+
+        // Section C: Audio transcription
+        function setupAudioClips() {
+            // Create synthetic audio context for demonstration
+            // In a real implementation, you would load actual audio files
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Generate simple tones to represent speech
+            ['c1', 'c2', 'c3', 'c4', 'c5'].forEach(id => {
+                const audio = document.getElementById(`audio-${id}`);
+                if (audio) {
+                    // For demo purposes, we'll simulate audio with a placeholder
+                    // In production, replace with actual audio files
+                }
+            });
+        }
+
+        function playAudio(id) {
+            const audio = document.getElementById(`audio-${id}`);
+            if (audio) {
+                // Simulate audio playback
+                console.log(`Playing audio for ${id}`);
+                // In production, use: audio.play();
+            }
+        }
+
+        function pauseAudio(id) {
+            const audio = document.getElementById(`audio-${id}`);
+            if (audio) {
+                // Simulate audio pause
+                console.log(`Pausing audio for ${id}`);
+                // In production, use: audio.pause();
+            }
+        }
+
+        function toggleHyphen(blank) {
+            const word1 = blank.dataset.word;
+            const word2 = blank.dataset.next;
+            const correctAnswer = blank.dataset.correct;
+            const exercise = blank.closest('.audio-exercise');
+            const feedback = exercise.querySelector('.feedback');
+            
+            if (blank.classList.contains('filled')) return;
+            
+            // Get current content or initialize
+            let currentContent = blank.querySelector('.hyphen-input')?.textContent || '';
+            
+            // Toggle between no hyphen, hyphen, and final answer
+            if (currentContent === '') {
+                currentContent = `${word1}-${word2}`;
+            } else if (currentContent === `${word1}-${word2}`) {
+                currentContent = `${word1} ${word2}`;
+            } else {
+                // Submit answer
+                const isCorrect = currentContent === correctAnswer;
+                blank.classList.add('filled');
+                blank.style.cursor = 'default';
+                
+                totalAttempts++;
+                if (isCorrect) {
+                    correctAnswers++;
+                    completedExercises++;
+                    showFeedback(feedback, true, `✅ Perfect! "${correctAnswer}" is correct.`);
+                } else {
+                    showFeedback(feedback, false, `❌ Not quite. The correct answer is "${correctAnswer}".`);
+                }
+                
+                updateProgress();
+                return;
+            }
+            
+            // Update display
+            let inputSpan = blank.querySelector('.hyphen-input');
+            if (!inputSpan) {
+                inputSpan = document.createElement('span');
+                inputSpan.className = 'hyphen-input';
+                blank.appendChild(inputSpan);
+            }
+            inputSpan.textContent = currentContent;
+        }
+
+        function showFeedback(feedbackEl, correct, message) {
+            feedbackEl.textContent = message;
+            feedbackEl.className = `feedback ${correct ? 'correct' : 'incorrect'} show`;
+        }
+
+        function updateProgress() {
+            const progress = Math.round((completedExercises / totalExercises) * 100);
+            const accuracy = totalAttempts > 0 ? Math.round((correctAnswers / totalAttempts) * 100) : 0;
+            
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('completedCount').textContent = completedExercises;
+            document.getElementById('accuracyRate').textContent = accuracy + '%';
+            
+            // Show completion celebration
+            if (completedExercises >= totalExercises) {
+                setTimeout(() => {
+                    document.getElementById('completionCelebration').classList.add('show');
+                }, 1000);
+            }
+        }
+    </script>
+</body>
+</html>
