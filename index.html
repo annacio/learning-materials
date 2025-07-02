@@ -269,33 +269,69 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .transcription-input {
-            background: #ffeb3b !important;
-            border: 4px solid #ff4444 !important;
-            border-radius: 12px !important;
-            padding: 15px 20px !important;
-            font-size: 1.2rem !important;
-            font-weight: bold !important;
-            min-width: 200px !important;
-            max-width: 250px !important;
-            margin: 0 10px !important;
-            display: inline-block !important;
-            text-align: center !important;
-            outline: none !important;
-            box-shadow: 0 4px 12px rgba(255, 68, 68, 0.4) !important;
+        .sentence-display {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 20px;
+            text-align: center;
+            line-height: 1.6;
         }
 
-        .transcription-input::placeholder {
-            color: #d32f2f !important;
-            font-weight: bold !important;
-            font-size: 1rem !important;
+        .answer-section {
+            background: #f0f8ff;
+            border: 3px solid #4299e1;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
         }
 
-        .transcription-input:focus {
-            border-color: #1976d2 !important;
-            background: #e3f2fd !important;
-            box-shadow: 0 0 0 6px rgba(25, 118, 210, 0.3) !important;
-            transform: scale(1.05) !important;
+        .answer-label {
+            display: block;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .answer-input {
+            width: 100%;
+            background: white;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .answer-input::placeholder {
+            color: #a0aec0;
+            font-style: italic;
+        }
+
+        .answer-input:focus {
+            border-color: #4299e1;
+            background: #f7fafc;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+        }
+
+        .answer-input.correct {
+            border-color: #48bb78;
+            background-color: #f0fff4;
+        }
+
+        .answer-input.incorrect {
+            border-color: #f56565;
+            background-color: #fed7d7;
+            animation: inputShake 0.5s ease-in-out;
+        }
+
+        @keyframes inputShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
         }
 
         .transcription-input.correct {
@@ -710,7 +746,7 @@
         function setupSectionC() {
             // Allow Enter key to submit
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && e.target.classList.contains('transcription-input')) {
+                if (e.key === 'Enter' && e.target.classList.contains('answer-input')) {
                     const exercise = e.target.closest('.audio-exercise');
                     const submitBtn = exercise.querySelector('.submit-btn');
                     if (submitBtn && !submitBtn.disabled) {
@@ -862,7 +898,7 @@
 
         function checkTranscription(button) {
             const exercise = button.closest('.audio-exercise');
-            const input = exercise.querySelector('.transcription-input');
+            const input = exercise.querySelector('.answer-input');
             const correctAnswer = input.dataset.correct;
             const userAnswer = input.value.trim().toLowerCase();
             const correctAnswerLower = correctAnswer.toLowerCase();
