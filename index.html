@@ -270,34 +270,43 @@
         }
 
         .blank-space {
-            background: #4299e1;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            border: 2px solid #2b6cb0;
-            transition: all 0.3s ease;
             display: inline-block;
             min-width: 120px;
+            border-bottom: 2px dashed #a0aec0;
+            cursor: pointer;
+            padding: 4px 8px;
             text-align: center;
+            color: #4a5568;
+            font-weight: 500;
+            background-color: #f7fafc;
+            border-radius: 6px;
+            transition: all 0.3s ease;
         }
 
         .blank-space:hover {
-            background: #3182ce;
-            transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(66, 153, 225, 0.3);
+            background-color: #edf2f7;
+            border-bottom-color: #4299e1;
+            transform: translateY(-1px);
         }
 
         .blank-space.filled {
-            background: #48bb78;
-            border-color: #38a169;
-            color: white;
+            font-style: normal;
+            background-color: #e6fffa;
+            border-bottom-color: #38b2ac;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .blank-space.correct {
+            background-color: #c6f6d5;
+            border-bottom-color: #48bb78;
+            color: #22543d;
         }
 
         .blank-space.incorrect {
-            background: #f56565;
-            border-color: #e53e3e;
+            background-color: #fed7d7;
+            border-bottom-color: #f56565;
+            color: #742a2a;
             animation: shake 0.5s ease-in-out;
         }
 
@@ -869,81 +878,39 @@
             }
         }
 
-        function fillBlank(span) {
-            if (span.classList.contains('filled')) return;
+        function toggleHyphen(span) {
+            const word = span.dataset.word;
+            const next = span.dataset.next;
+            const withHyphen = `${word}-${next}`;
+            const withoutHyphen = `${word} ${next}`;
             
-            // Make the span editable
-            span.contentEditable = true;
-            span.textContent = '';
-            span.style.background = '#e3f2fd';
-            span.style.color = '#1976d2';
-            span.focus();
-            
-            // Add placeholder text
-            span.dataset.placeholder = 'type here...';
-            if (span.textContent === '') {
-                span.textContent = 'type here...';
-                span.style.fontStyle = 'italic';
-                span.style.opacity = '0.7';
+            if (!span.classList.contains('filled')) {
+                span.textContent = withHyphen;
+                span.classList.add('filled');
+            } else if (span.textContent === withHyphen) {
+                span.textContent = withoutHyphen;
+            } else {
+                span.textContent = withHyphen;
             }
-            
-            // Handle focus events
-            span.addEventListener('focus', function() {
-                if (this.textContent === 'type here...') {
-                    this.textContent = '';
-                    this.style.fontStyle = 'normal';
-                    this.style.opacity = '1';
-                }
-            });
-            
-            // Handle blur events
-            span.addEventListener('blur', function() {
-                if (this.textContent.trim() === '') {
-                    this.textContent = 'type here...';
-                    this.style.fontStyle = 'italic';
-                    this.style.opacity = '0.7';
-                } else {
-                    this.classList.add('filled');
-                    this.dataset.userAnswer = this.textContent.trim();
-                    this.style.background = '#bbdefb';
-                    this.style.fontStyle = 'normal';
-                    this.style.opacity = '1';
-                    this.contentEditable = false;
-                }
-            });
-            
-            // Handle Enter key
-            span.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    this.blur();
-                }
-            });
         }
 
         function checkTranscription(button) {
             const exercise = button.closest('.audio-exercise');
             const blankSpan = exercise.querySelector('.blank-space');
             const correctAnswer = blankSpan.dataset.correct;
-            const userAnswer = (blankSpan.dataset.userAnswer || '').toLowerCase();
-            const correctAnswerLower = correctAnswer.toLowerCase();
+            const userAnswer = blankSpan.textContent.trim();
             
-            if (!userAnswer) {
-                showAnswerPopup(false, 'Please fill in the blank first!', '', correctAnswer);
+            if (!blankSpan.classList.contains('filled') || userAnswer === 'click to fill') {
+                showAnswerPopup(false, 'Please fill in the blank first by clicking on it!', '', correctAnswer);
                 return;
             }
             
             // Check if answer is correct
-            const isCorrect = userAnswer === correctAnswerLower;
+            const isCorrect = userAnswer === correctAnswer;
             
             // Update span styling
             blankSpan.classList.remove('correct', 'incorrect');
-            if (isCorrect) {
-                blankSpan.classList.add('filled');
-                blankSpan.style.background = '#48bb78';
-            } else {
-                blankSpan.classList.add('incorrect');
-            }
+            blankSpan.classList.add(isCorrect ? 'correct' : 'incorrect');
             
             // Disable span and button
             blankSpan.onclick = null;
